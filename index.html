@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Math</title>
+    <style>
+      body {
+        margin: 0;
+        display: flex;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background-color: #f5f5f5;
+        font-family: Arial, sans-serif;
+      }
+
+      .form {
+        padding: 10px 45px;
+        border-radius: 20px;
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 1),
+                    -4px -4px 10px rgba(255, 255, 255, 0.2);
+        background-color: white;
+      }
+
+      input {
+        display: block;
+        box-sizing: border-box;
+        font-size: 30px;
+        text-align: center;
+        width: 300px;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #F4F5F0;
+        border-radius: 5px;
+        box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 1),
+                    inset -2px -2px 10px rgba(255, 255, 255, 0.2);
+      }
+
+      .input::placeholder {
+        color: lightgray;
+        font-family: Arial, sans-serif;
+      }
+
+      .btn {
+        background-color: #F4F5F0;
+        color: black;
+        border: none;
+        display: block;
+        width: 30%;
+        padding: 10px;
+        font-size: 20px;
+        font-family: Arial, sans-serif;
+        margin: 20px auto;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        filter: brightness(0.9);
+      }
+
+      .score {
+        color: black;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <form class="form" id="form">
+      <h4 class="score" id="score">score: 0</h4>
+      <h1 id="question">1 X 1 = ?</h1>
+      <input
+        type="text"
+        class="input"
+        id="input"
+        placeholder="Enter your answer"
+        autofocus
+        autocomplete="off"
+      />
+      <button type="submit" class="btn">Submit</button>
+    </form>
+    <script>
+      const num1 = Math.ceil(Math.random() * 10);
+      const num2 = Math.ceil(Math.random() * 10);
+
+      const questionEl = document.getElementById("question");
+      const inputEl = document.getElementById("input");
+      const formEl = document.getElementById("form");
+      const scoreEl = document.getElementById("score");
+
+      let score = JSON.parse(localStorage.getItem("score"));
+
+      if (!score) {
+        score = 0;
+      }
+
+      scoreEl.innerText = `score: ${score}`;
+      questionEl.innerText = `${num1} X ${num2} = ?`;
+
+      const correctAns = num1 * num2;
+
+      formEl.addEventListener("submit", (e) => {
+        e.preventDefault(); // Prevent form submission
+        const userAns = +inputEl.value;
+        if (userAns === correctAns) {
+          score++;
+        } else {
+          score--;
+        }
+        updateLocalStorage();
+        location.reload(); // Reload to show new question
+      });
+
+      function updateLocalStorage() {
+        localStorage.setItem("score", JSON.stringify(score));
+      }
+    </script>
+  </body>
+</html>
